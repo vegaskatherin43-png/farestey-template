@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Farestey Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* Concepto: noche morada con bordes en zigzag; la herramienta es una sola columna central, las plantillas aparecen como tarjetas sobre fondo de tablero. */
+:root {
+  --night: #1a0a2e;
+  --plum: #2a1148;
+  --grape: #3d1a66;
+  --lilac: #c9a8ff;
+  --pink: #ff6fb5;
+  --ink: #fff4fb;
+  --muted: #b9a3d6;
+  --line: #5a2d91;
+  --ok: #7fe3b0;
+  --bad: #ff8a9b;
+  --font-display: "Bungee", "Arial Black", Impact, sans-serif;
+  --font-body: "Fredoka", "Trebuchet MS", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { background: var(--night); }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(1200px 600px at 50% -10%, #4b1d84 0%, var(--night) 60%) var(--night);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 40px;
+  position: relative;
+}
+/* Marca de agua repetida en todo el fondo */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='210'%3E%3Ctext x='24' y='118' transform='rotate(-24 170 105)' font-family='Arial Black,Impact,sans-serif' font-size='24' fill='%23ffffff' fill-opacity='0.055'%3EFarestey Template%3C/text%3E%3C/svg%3E");
+}
+.wrap { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; }
+
+/* Cabecera */
+header { padding: 36px 0 30px; text-align: center; position: relative; }
+.brand { display: inline-flex; align-items: center; gap: 14px; }
+.brand svg { width: 44px; height: 44px; flex: none; }
+h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.9rem, 7vw, 3.4rem);
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  text-shadow: 3px 3px 0 var(--pink), 6px 6px 0 #000;
+  text-wrap: balance;
+}
+.tag { margin: 18px auto 0; color: var(--muted); max-width: 46ch; }
+.zig {
+  height: 14px;
+  margin-top: 26px;
+  background:
+    linear-gradient(135deg, var(--night) 25%, transparent 25%) -7px 0,
+    linear-gradient(225deg, var(--night) 25%, transparent 25%) -7px 0,
+    var(--pink);
+  background-size: 14px 14px;
+  background-color: var(--pink);
+}
+.decor { position: absolute; top: 14px; max-height: 96px; max-width: 22vw; }
+.decor.l { left: 0; } .decor.r { right: 0; }
+
+/* Panel de búsqueda */
+.panel {
+  background: var(--plum);
+  border: 3px solid #000;
+  border-radius: 20px;
+  box-shadow: 6px 6px 0 var(--pink);
+  padding: 22px;
+  margin-top: 26px;
+}
+label { display: block; font-weight: 600; margin-bottom: 8px; }
+.row { display: flex; gap: 12px; flex-wrap: wrap; }
+textarea {
+  flex: 1 1 320px;
+  min-width: 0;
+  min-height: 64px;
+  resize: vertical;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 2px solid var(--line);
+  background: var(--night);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 15px;
+}
+textarea::placeholder { color: #8a73ab; }
+textarea:focus-visible, button:focus-visible, a:focus-visible { outline: 3px solid var(--lilac); outline-offset: 2px; }
+.hint { margin: 10px 0 0; font-size: 0.9rem; color: var(--muted); }
+button, .btn {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  border: 3px solid #000;
+  border-radius: 12px;
+  padding: 12px 20px;
+  background: var(--pink);
+  color: #1a0a2e;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  box-shadow: 3px 3px 0 #000;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+button:hover, .btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 #000; }
+button:active, .btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #000; }
+button[disabled] { opacity: .6; cursor: wait; }
+.btn.ghost { background: var(--grape); color: var(--ink); border-color: #000; }
+.go { align-self: flex-start; }
+#status { min-height: 1.4em; margin: 16px 2px 0; color: var(--muted); }
+#status.err { color: var(--bad); }
+
+/* Resultados */
+#results {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: 22px;
+  margin-top: 26px;
+}
+.card {
+  background: var(--plum);
+  border: 3px solid #000;
+  border-radius: 18px;
+  box-shadow: 5px 5px 0 var(--lilac);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  min-width: 0;
+}
+.stage {
+  aspect-ratio: 1 / 1;
+  display: grid; place-items: center;
+  padding: 10px;
+  background:
+    conic-gradient(#3a2260 25%, #2b184a 0 50%, #3a2260 0 75%, #2b184a 0) 0 0 / 22px 22px;
+  border-bottom: 3px solid #000;
+}
+.stage img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+.stage.loading { color: var(--muted); font-size: .95rem; text-align: center; padding: 20px; }
+.stage.fail { color: var(--bad); text-align: center; padding: 20px; background: var(--night); }
+.meta { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.name { font-weight: 600; overflow-wrap: anywhere; }
+.facts { font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); overflow-wrap: anywhere; }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+.actions .btn { padding: 10px 14px; font-size: .82rem; flex: 1 1 auto; }
+
+footer { margin-top: 44px; text-align: center; color: var(--muted); font-size: .9rem; }
+footer b { font-family: var(--font-display); font-weight: 400; color: var(--pink); letter-spacing: .04em; }
+.deco-row { display: flex; justify-content: center; gap: 14px; margin-bottom: 10px; }
+.deco-row svg { width: 22px; height: 22px; }
+
+@media (max-width: 560px) {
+  .decor { display: none; }
+  .go { width: 100%; }
+  .panel { padding: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  button, .btn { transition: none; }
+}
+@keyframes pulse { 50% { opacity: .5; } }
+.stage.loading span { animation: pulse 1.2s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .stage.loading span { animation: none; } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-skull" viewBox="0 0 32 32"><path d="M16 3C9.4 3 5 7.4 5 13.2c0 3.4 1.6 5.6 3.6 7V25a1.5 1.5 0 0 0 1.5 1.5H12V24h2v2.5h4V24h2v2.5h1.9A1.5 1.5 0 0 0 23.4 25v-4.8c2-1.4 3.6-3.6 3.6-7C27 7.4 22.6 3 16 3Z" fill="#c9a8ff" stroke="#000" stroke-width="2" stroke-linejoin="round"/><circle cx="11.5" cy="14" r="2.6" fill="#1a0a2e"/><circle cx="20.5" cy="14" r="2.6" fill="#1a0a2e"/><path d="M16 17.5l-1.6 2.8h3.2Z" fill="#1a0a2e"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 32 32"><path d="M16 28S3.5 20.5 3.5 11.6C3.5 7.4 6.7 4.5 10.3 4.5c2.5 0 4.5 1.4 5.7 3.4 1.2-2 3.2-3.4 5.7-3.4 3.6 0 6.8 2.9 6.8 7.1C28.5 20.5 16 28 16 28Z" fill="#ff6fb5" stroke="#000" stroke-width="2" stroke-linejoin="round"/></symbol>
+    <symbol id="i-star" viewBox="0 0 32 32"><path d="M16 3l3.8 8.2 8.9 1-6.6 6 1.8 8.8L16 22.5 8.1 27l1.8-8.8-6.6-6 8.9-1Z" fill="#ffd9ef" stroke="#000" stroke-width="2" stroke-linejoin="round"/></symbol>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <header>
+    <img class="decor l" src="decor-left.png" alt="" onerror="this.remove()">
+    <img class="decor r" src="decor-right.png" alt="" onerror="this.remove()">
+    <div class="brand">
+      <svg aria-hidden="true"><use href="#i-skull"/></svg>
+      <h1>Farestey Template</h1>
+      <svg aria-hidden="true"><use href="#i-heart"/></svg>
+    </div>
+    <p class="tag">Escribe el ID de una plantilla, ropa o imagen del catálogo de Roblox y descarga el PNG exacto.</p>
+    <div class="zig" aria-hidden="true"></div>
+  </header>
+
+  <main>
+    <form id="form" class="panel" autocomplete="off">
+      <label for="ids">ID o enlace del catálogo</label>
+      <div class="row">
+        <textarea id="ids" name="ids" rows="2" inputmode="text" placeholder="Ej. 607785314&#10;o pega un enlace de roblox.com/catalog/…" spellcheck="false"></textarea>
+        <button class="go" type="submit" id="go">Buscar PNG</button>
+      </div>
+      <p class="hint">Puedes pegar varios IDs separados por espacio, coma o salto de línea (máximo 12).</p>
+    </form>
+
+    <p id="status" role="status" aria-live="polite"></p>
+    <section id="results" aria-label="Resultados"></section>
+  </main>
+
+  <footer>
+    <div class="deco-row" aria-hidden="true">
+      <svg><use href="#i-star"/></svg><svg><use href="#i-heart"/></svg><svg><use href="#i-skull"/></svg><svg><use href="#i-heart"/></svg><svg><use href="#i-star"/></svg>
+    </div>
+    <b>Farestey Template</b> · Plantillas de Roblox por ID
+  </footer>
+</div>
+
+<script>
+(function () {
+  var form = document.getElementById('form');
+  var input = document.getElementById('ids');
+  var go = document.getElementById('go');
+  var statusEl = document.getElementById('status');
+  var results = document.getElementById('results');
+  var MAX = 12;
+
+  function setStatus(msg, isErr) {
+    statusEl.textContent = msg || '';
+    statusEl.className = isErr ? 'err' : '';
+  }
+
+  function parseIds(raw) {
+    var tokens = raw.split(/[\s,;]+/).filter(Boolean);
+    var out = [];
+    tokens.forEach(function (t) {
+      var id = null, m;
+      if (/^\d{1,19}$/.test(t)) id = t;
+      else if ((m = t.match(/(?:catalog|library|asset|bundles?|assets)\/(\d{1,19})/i))) id = m[1];
+      else if ((m = t.match(/[?&]id=(\d{1,19})/i))) id = m[1];
+      if (id && out.indexOf(id) === -1) out.push(id);
+    });
+    return out;
+  }
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  function fmtBytes(b) {
+    if (b < 1024) return b + ' B';
+    if (b < 1048576) return (b / 1024).toFixed(1) + ' KB';
+    return (b / 1048576).toFixed(2) + ' MB';
+  }
+
+  function makeCard(id) {
+    var card = el('article', 'card');
+    var stage = el('div', 'stage loading');
+    stage.appendChild(el('span', null, 'Buscando ' + id + '…'));
+    var meta = el('div', 'meta');
+    card.appendChild(stage);
+    card.appendChild(meta);
+    return { card: card, stage: stage, meta: meta };
+  }
+
+  function fillCard(c, id, data) {
+    c.stage.className = 'stage';
+    c.stage.textContent = '';
+    var img = new Image();
+    img.alt = 'Plantilla ' + id;
+    img.decoding = 'async';
+    var dims = el('div', 'facts', '');
+    img.onload = function () {
+      dims.textContent = 'ID ' + id + ' · ' + img.naturalWidth + '×' + img.naturalHeight + ' px · ' +
+        data.format.toUpperCase() + ' · ' + fmtBytes(data.bytes);
+    };
+    img.onerror = function () {
+      c.stage.className = 'stage fail';
+      c.stage.textContent = 'No se pudo cargar la imagen.';
+    };
+    img.src = '/api/image?id=' + encodeURIComponent(id);
+    c.stage.appendChild(img);
+
+    c.meta.appendChild(el('div', 'name', data.name || 'Recurso ' + id));
+    if (data.type) c.meta.appendChild(el('div', 'facts', data.type));
+    c.meta.appendChild(dims);
+    if (data.textureId && data.textureId !== id) {
+      c.meta.appendChild(el('div', 'facts', 'ID de la imagen: ' + data.textureId));
+    }
+    var actions = el('div', 'actions');
+    var dl = el('a', 'btn', 'Descargar');
+    dl.href = '/api/image?id=' + encodeURIComponent(id) + '&download=1';
+    dl.setAttribute('download', '');
+    var open = el('a', 'btn ghost', 'Ver en Roblox');
+    open.href = 'https://www.roblox.com/catalog/' + encodeURIComponent(id);
+    open.target = '_blank';
+    open.rel = 'noopener noreferrer';
+    actions.appendChild(dl);
+    actions.appendChild(open);
+    c.meta.appendChild(actions);
+  }
+
+  function failCard(c, id, message) {
+    c.stage.className = 'stage fail';
+    c.stage.textContent = message;
+    c.meta.appendChild(el('div', 'name', 'ID ' + id));
+  }
+
+  async function lookup(id, c) {
+    try {
+      var r = await fetch('/api/resolve?id=' + encodeURIComponent(id));
+      var data = await r.json();
+      if (!r.ok || !data.ok) { failCard(c, id, data.error || 'No se pudo obtener ese ID.'); return false; }
+      fillCard(c, id, data);
+      return true;
+    } catch (e) {
+      failCard(c, id, 'No hay conexión con el servidor. Revisa que siga encendido.');
+      return false;
+    }
+  }
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var ids = parseIds(input.value);
+    if (!ids.length) { setStatus('Escribe un ID numérico o pega un enlace del catálogo de Roblox.', true); return; }
+    var note = '';
+    if (ids.length > MAX) { ids = ids.slice(0, MAX); note = ' (se muestran los primeros ' + MAX + ')'; }
+
+    go.disabled = true;
+    results.textContent = '';
+    setStatus('Buscando ' + ids.length + (ids.length === 1 ? ' ID' : ' IDs') + '…' + note);
+
+    var cards = ids.map(function (id) {
+      var c = makeCard(id);
+      results.appendChild(c.card);
+      return c;
+    });
+
+    var ok = 0, next = 0;
+    async function worker() {
+      while (next < ids.length) {
+        var i = next++;
+        if (await lookup(ids[i], cards[i])) ok++;
+      }
+    }
+    await Promise.all([worker(), worker(), worker()]);
+
+    go.disabled = false;
+    if (ok === ids.length) setStatus('Listo. ' + ok + (ok === 1 ? ' plantilla encontrada.' : ' plantillas encontradas.') + note);
+    else if (ok === 0) setStatus('No se encontró ninguna plantilla.', true);
+    else setStatus(ok + ' de ' + ids.length + ' encontradas.' + note);
+  });
+
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); form.requestSubmit(); }
+  });
+})();
+</script>
+</body>
+</html>
